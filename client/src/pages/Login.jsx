@@ -34,28 +34,28 @@ function Login() {
   };
 
   return (
-    <div>
+  <div className="auth-container">
+    <div className="auth-card">
+
       <h1>TechBoho TaskFlow</h1>
-
       <h2>Login</h2>
+      {error && <p className="error-message">{error}</p>}
 
-      {error && <p>{error}</p>}
-
-      <form onSubmit={handleSubmit}>
+      <form className="auth-form" onSubmit={handleSubmit}>
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
+            <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
         />
 
         <button type="submit">
@@ -63,14 +63,14 @@ function Login() {
         </button>
       </form>
 
-      <p>
-        Don't have an account?{" "}
-        <Link to="/register">
-          Register
-        </Link>
+      <p className="auth-link">
+        Don't have an account?
+        <Link to="/register"> Register</Link>
       </p>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default Login;
