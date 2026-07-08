@@ -34,6 +34,13 @@ const taskSchema = new mongoose.Schema(
     dueDate: {
       type: Date,
     },
+  
+  category: {
+  type: String,
+  enum: ["work", "fitness", "trading", "personal", "learning"],
+  default: "personal",
+    },
+  
   },
   { timestamps: true }
 );

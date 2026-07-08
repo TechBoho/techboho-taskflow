@@ -6,23 +6,26 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
   const [editingTask, setEditingTask] = useState(null);
 
   const [editData, setEditData] = useState({
-    title: "",
-    description: "",
-    priority: "medium",
-    dueDate: "",
-  });
+  title: "",
+  description: "",
+  priority: "medium",
+  dueDate: "",
+  category: "personal",
+});
 
   const [taskData, setTaskData] = useState({
-    title: "",
-    description: "",
-    priority: "medium",
-    status: "pending",
-    dueDate: "",
-  });
+  title: "",
+  description: "",
+  priority: "medium",
+  status: "pending",
+  dueDate: "",
+  category: "personal",
+});
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -67,23 +70,25 @@ function Dashboard() {
     setTasks([response.data, ...tasks]);
 
     setTaskData({
-      title: "",
-      description: "",
-      priority: "medium",
-      status: "pending",
-      dueDate: "",
-    });
+  title: "",
+  description: "",
+  priority: "medium",
+  status: "pending",
+  dueDate: "",
+  category: "personal",
+});
   };
 
   const startEditing = (task) => {
     setEditingTask(task);
 
     setEditData({
-      title: task.title,
-      description: task.description,
-      priority: task.priority,
-      dueDate: task.dueDate ? task.dueDate.split("T")[0] : "",
-    });
+  title: task.title,
+  description: task.description,
+  priority: task.priority,
+  dueDate: task.dueDate ? task.dueDate.split("T")[0] : "",
+  category: task.category || "personal",
+});
   };
 
   const cancelEditing = () => {
@@ -164,6 +169,11 @@ function Dashboard() {
   const filteredTasks = tasks
   .filter((task) =>
     task.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+  .filter((task) =>
+    categoryFilter === "all"
+      ? true
+      : task.category === categoryFilter
   )
   .sort((a, b) => {
     if (sortBy === "priority") {
@@ -259,15 +269,27 @@ const completionPercentage =
           onChange={handleChange}
         />
 
-        <select
-          name="priority"
-          value={taskData.priority}
-          onChange={handleChange}
-        >
-          <option value="low">Low Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="high">High Priority</option>
-        </select>
+  <select
+  name="priority"
+  value={taskData.priority}
+  onChange={handleChange}
+>
+  <option value="low">Low Priority</option>
+  <option value="medium">Medium Priority</option>
+  <option value="high">High Priority</option>
+</select>
+
+<select
+  name="category"
+  value={taskData.category}
+  onChange={handleChange}
+>
+  <option value="personal">Personal</option>
+  <option value="work">Work</option>
+  <option value="fitness">Fitness</option>
+  <option value="trading">Trading</option>
+  <option value="learning">Learning</option>
+</select>
 
         <input
           type="date"
@@ -310,6 +332,18 @@ const completionPercentage =
             <option value="high">High Priority</option>
           </select>
 
+          <select
+          name="category"
+          value={editData.category}
+          onChange={handleEditChange}
+        >
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+          <option value="fitness">Fitness</option>
+          <option value="trading">Trading</option>
+          <option value="learning">Learning</option>
+        </select>
+
           <input
             type="date"
             name="dueDate"
@@ -350,6 +384,18 @@ const completionPercentage =
     <option value="dueDate">Due Date</option>
     <option value="status">Status</option>
   </select>
+  <select
+  value={categoryFilter}
+  onChange={(e) => setCategoryFilter(e.target.value)}
+  className="search-input"
+>
+  <option value="all">All Categories</option>
+  <option value="trading">Trading</option>
+  <option value="fitness">Fitness</option>
+  <option value="work">Work</option>
+  <option value="personal">Personal</option>
+  <option value="learning">Learning</option>
+</select>
   </div>
 
       <h2>Your Tasks</h2>
@@ -374,6 +420,10 @@ const completionPercentage =
                 <span className={`badge priority-${task.priority}`}>
                   {task.priority}
                 </span>
+
+                <span className="badge">
+                {task.category || "personal"}
+              </span>
 
                 <span className={`badge status-${task.status}`}>
                   {task.status}
