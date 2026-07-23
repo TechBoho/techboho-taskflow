@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import TaskCharts from "../components/TaskCharts";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -248,6 +249,8 @@ const completionPercentage =
     ></div>
   </div>
   </div>
+
+  <TaskCharts tasks={tasks} />
 
       <form className="task-form" onSubmit={handleCreateTask}>
         <h2>Create New Task</h2>
